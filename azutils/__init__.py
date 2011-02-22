@@ -79,6 +79,10 @@ def invTimetuple(st):
     #inverse of datetime.timetuple()
     return datetime.datetime(*st[:6])
 
+def listdir(d):
+    #os.listdir, preserving unicode strings
+    return os.listdir(unicode(d))
+
 def opj(*args):
     #short for os.path.join. I hate writing that
     return os.path.join(*args)
