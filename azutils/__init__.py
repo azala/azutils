@@ -63,6 +63,9 @@ def unclean(l):
     #inverse clean
     return list(map(lambda x: (x+'\r\n').encode('utf'), l))
 
+def readToSplitList(fn):
+    return map(lambda x: x.split('\t'), clean(fread(fn)))
+
 def dateTimeStr(st):
     #my string representation of a struct_time
     return time.strftime('%Y-%m-%d-%H%M%S', st)
