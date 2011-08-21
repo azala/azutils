@@ -1,4 +1,4 @@
-import os, time, sys, ConfigParser, shutil, datetime
+import os, time, sys, ConfigParser, shutil, datetime, traceback
 
 def backup(src, bkdirpath=os.path.abspath('backups'), t=time.gmtime(), oneDir=False, srcIsDir=False):
     '''
@@ -63,8 +63,8 @@ def unclean(l):
     #inverse clean
     return list(map(lambda x: (x+'\r\n').encode('utf'), l))
 
-def readToSplitList(fn):
-    return map(lambda x: x.split('\t'), clean(fread(fn)))
+def readToSplitList(fn, sep = '\t'):
+    return map(lambda x: x.split(sep), clean(fread(fn)))
 
 def dateTimeStr(st):
     #my string representation of a struct_time
@@ -110,3 +110,35 @@ def tryOpen(f, mode, kill = False):
         if kill:
             sys.exit(1)
         return False
+    
+def tryRemoveFile(f, printExc=True):
+    try:
+        os.remove(f)
+    except Exception as e:
+        if printExc:
+            traceback.print_exc(e)
+        else:
+            print 'Could not remove file: '+f
+        return
+    print 'Removed file: '+f
+    
+def tryRemoveDir(d, printExc=True):
+    try:
+        shutil.rmtree(d)
+    except Exception as e:
+        if printExc:
+            traceback.print_exc(e)
+        else:
+            print 'Could not remove dir: '+d
+        return
+    print 'Removed dir: '+d
+    
+def killAppleFiles(path, printExc):
+    #safety
+    print 'Killing apple files in: '+path
+    print 'Get out now if you don\'t want this.'
+    raw_input()
+    tryRemoveFile(opj(path, '._.Trashes'), printExc)
+    tryRemoveDir(opj(path, '.Spotlight-V100'), printExc)
+    tryRemoveDir(opj(path, '.Trashes'), printExc)
+    tryRemoveDir(opj(path, '.fseventsd'), printExc)
