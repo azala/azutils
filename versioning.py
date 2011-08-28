@@ -18,9 +18,9 @@ def increment():
     if len(l) > 0:
         v = Version(l[0][lenvs:])
         v.minor += 1
-        os.system('move "'+l[0]+'" "'+vstring+v.toStr()+'"')
+        os.system('mv "'+l[0]+'" "'+vstring+v.toStr()+'"')
     else:
         vs = '0.1'
         v = Version(vs)
-        os.system('type nul > '+vstring+vs)
+        os.system('touch '+vstring+vs)
     return v.toStr()
