@@ -149,3 +149,7 @@ def killAppleFiles(path, printExc):
 
 def unorm(s):
     return unicodedata.normalize('NFC', s)
+
+def printret(s):
+    print s
+    return s
